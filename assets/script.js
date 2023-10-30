@@ -21,3 +21,4 @@ $(document).ready(function () {
 	// update the current date and time every second
 	setInterval(updateCurrentTime, 1000);
 });
+
