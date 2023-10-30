@@ -42,3 +42,27 @@ header {
     border-radius: 15px;
     
   }
+
+
+  .time-container{
+    color:antiquewhite;
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  #timeTitle {
+    text-align: center;
+    }
+
+    .displayDateTime {
+        text-align: center;
+        margin-top: -15px;
+      }
+
+
+
+      .modal {
+        background-color: #4e4e4e;
+        text-align: center;
+      }
+      
