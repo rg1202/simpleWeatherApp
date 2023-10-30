@@ -1,7 +1,6 @@
 header {
     background-color: #4e4e4e;
-    color: black
-    ;
+    color: black;
     border-bottom: solid 1px #8e8e8e;
   }
   
@@ -26,5 +25,20 @@ header {
 .app-container {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   
 }
+
+.weather-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    border: solid 1px white;
+    color:black;
+    margin: 10px 10px 10px 10px;
+    height: 1000px;
+    background-color: #8e8e8e;
+    border-radius: 15px;
+    
+  }
