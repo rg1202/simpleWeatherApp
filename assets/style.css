@@ -1,0 +1,30 @@
+header {
+    background-color: #4e4e4e;
+    color: black
+    ;
+    border-bottom: solid 1px #8e8e8e;
+  }
+  
+.title {
+    text-align: center;
+}
+
+  body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 15px;
+    background-color: #4e4e4e;
+  }
+
+  #locationInput {
+    width: 30%;
+    border: solid 1px;
+    background-color: #2e2e2e;
+    margin: 10px;
+    color: white;
+  }
+
+.app-container {
+  display: flex;
+  justify-content: space-between;
+  
+}
