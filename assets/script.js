@@ -48,7 +48,7 @@ $(document).ready(function () {
 						.then((data) => {
 							// Extract and display weather data
 							const weatherData = data.list;
-							console.log(weatherData);
+							//console.log(weatherData);
 
 							//console.log(weatherData[0].main.temp);
 							// Update the "weatherData" div with the data
@@ -59,30 +59,31 @@ $(document).ready(function () {
 							const weatherDataDiv = modal.querySelector("#weatherData");
 							weatherDataDiv.innerHTML = "";
 
-							weatherData.forEach(function ({ dt_txt, main, weather, wind }, index) {
+							weatherData.forEach(function (
+								{ dt_txt, main, weather, wind },
+								index
+							) {
 								if (index % itemsToShow === 0) {
 									const { temp } = main;
 									const { icon } = weather[0];
 									const { description } = weather[0];
 									const { humidity } = main;
 									const { speed } = wind;
-									
 
 									const weatherDayDiv = document.createElement("div");
 									const dateTime = document.createElement("p");
 									const tempDay = document.createElement("p");
 									const weatherIcon = document.createElement("img");
-									const weatherDesc = document.createElement("p")
+									const weatherDesc = document.createElement("p");
 									const humidDay = document.createElement("p");
-									const windSpeed = document.createElement("p")
-									
+									const windSpeed = document.createElement("p");
 
 									weatherIcon.src = `${baseIconUrl}${icon}.png`;
 									tempDay.textContent = `${temp}° F`;
 									humidDay.textContent = `Humidity: ${humidity}%`;
 									windSpeed.textContent = `Wind: ${speed} mph`;
 									weatherDesc.textContent = `${description}`;
-									
+
 									// Convert the dt_txt string to a Date object and format it
 									const date = new Date(dt_txt);
 									const options = {
@@ -115,27 +116,30 @@ $(document).ready(function () {
 							secondWeatherDataDiv.innerHTML = "";
 
 							// Append the elements to main page weatherData div
-							weatherData.forEach(function ({ dt_txt, main, weather, wind, }, index) {
+							weatherData.forEach(function (
+								{ dt_txt, main, weather, wind },
+								index
+							) {
 								if (index % itemsToShow2 === 0) {
 									const { temp } = main;
 									const { icon } = weather[0];
 									const { description } = weather[0];
 									const { humidity } = main;
 									const { speed } = wind;
-									
+
 									//create elements
 									const weatherDayDiv = document.createElement("div");
 									const dateTime = document.createElement("p");
 									const tempDay = document.createElement("p");
 									const tempDayC = document.createElement("p");
 									const humidDay = document.createElement("p");
-									const windSpeed = document.createElement("p")
+									const windSpeed = document.createElement("p");
 									const weatherIcon = document.createElement("img");
-									const weatherDesc = document.createElement("p")
+									const weatherDesc = document.createElement("p");
 
 									//convert temp from F to C
-									function fahrenheitToCelcius(fahrenheit){
-										return (fahrenheit - 32) * (5/9);
+									function fahrenheitToCelcius(fahrenheit) {
+										return (fahrenheit - 32) * (5 / 9);
 									}
 									//declare temp conversion variables
 									const tempFahrenheit = temp;
@@ -143,7 +147,9 @@ $(document).ready(function () {
 
 									//content from array to append
 									weatherIcon.src = `${baseIconUrl}${icon}@2x.png`;
-									tempDay.textContent = `${tempFahrenheit}° F /  ${tempCelcius.toFixed(2)}° C`;
+									tempDay.textContent = `${tempFahrenheit}° F /  ${tempCelcius.toFixed(
+										2
+									)}° C`;
 									//tempDayC.textContent = `${tempCelcius.toFixed(2)}° C`;
 									humidDay.textContent = `Humidity: ${humidity}%`;
 									windSpeed.textContent = `Wind: ${speed} mph`;
@@ -175,7 +181,6 @@ $(document).ready(function () {
 									weatherDayDiv.appendChild(windSpeed);
 									weatherDayDiv.appendChild(tempDay);
 									weatherDayDiv.appendChild(tempDayC);
-									
 
 									secondWeatherDataDiv.appendChild(weatherDayDiv); // Append to the second location's weatherData div
 									updateMap(lat, lon);
@@ -195,6 +200,18 @@ $(document).ready(function () {
 			.catch((error) => {
 				console.error("Error fetching location data:", error);
 			});
+	}
+
+	// After fetching the weather data save to local storage
+	const locationInput = document.getElementById("locationInput").value;
+	localStorage.setItem(
+		"searchHistory",
+		JSON.stringify([...getSearchHistory(), locationInput])
+	);
+
+	function getSearchHistory() {
+		const searchHistory = localStorage.getItem("searchHistory");
+		return searchHistory ? JSON.parse(searchHistory) : [];
 	}
 
 	// Function to update the Leaflet/OpenStreetMaps map with weather data
@@ -251,8 +268,8 @@ $(document).ready(function () {
 					opacity: 0.5,
 				}
 			);
-			
-			//declare variables to display layer options 
+
+			//declare variables to display layer options
 			const weatherLayers = L.layerGroup([
 				precipitationLayer,
 				cloudLayer,
@@ -265,7 +282,6 @@ $(document).ready(function () {
 			const temperature = L.layerGroup([temperatureLayer]);
 			const windL = L.layerGroup([windLayer]);
 			const pressureL = L.layerGroup([pressureLayer]);
-
 
 			const baseLayers = {
 				OpenStreetMap: openStreetMapLayer,
@@ -283,7 +299,9 @@ $(document).ready(function () {
 				// Add more overlay layers as needed
 			};
 
-			L.control.layers(baseLayers, overlayLayers, { collapsed:false }).addTo(map);
+			L.control
+				.layers(baseLayers, overlayLayers, { collapsed: false })
+				.addTo(map);
 
 			map.on("baselayerchange", function (eventLayer) {
 				const selectedLater = eventLayer.name;
@@ -322,6 +340,29 @@ $(document).ready(function () {
 		}
 	}
 
+	function updateSearchHistoryButtons() {
+		const searchHistory = getSearchHistory();
+		const resultsList = document.querySelector(".results-list");
+		resultsList.innerHTML = "";
+
+		searchHistory.forEach((location) => {
+			const searchButton = document.createElement("button");
+			searchButton.textContent = location;
+			searchButton.addEventListener("click", function () {
+				document.getElementById("locationInput").value = location;
+				document.getElementById("getSearch").click(); // Simulate a click on the search button
+			});
+
+			resultsList.appendChild(searchButton);
+		});
+	}
+
+	// Function to clear the search history from local storage
+	function clearSearchHistory() {
+		localStorage.removeItem("searchHistory");
+		updateSearchHistoryButtons(); // Update the displayed search history buttons
+	}
+
 	// Add an event listener to the "Search" button to fire the search
 	document.getElementById("getSearch").addEventListener("click", function () {
 		// Call the getWeather function
@@ -331,22 +372,35 @@ $(document).ready(function () {
 		const weatherMapDiv = document.getElementById("weatherMap");
 		weatherMapDiv.style.display = "block";
 
-		//show the 5 day forecast modal button
+		// Show the 5-day forecast modal button
 		const forecastbtn = document.getElementById("forecastbtn");
 		forecastbtn.style.display = "block";
 
-		//show the weatherdata
+		// Show the weather data
 		const wdata = document.getElementById("weatherData");
 		wdata.style.display = "block";
 
 		// Get the input value from #locationInput
 		const locationInput = document.getElementById("locationInput").value;
-    
-		// Get the "locationSearched" div
-		const locationSearchedDiv = document.querySelector(".locationSearched");
 
 		// Update the content of the "locationSearched" div
-		locationSearchedDiv.innerHTML = `${locationInput}`;
+		const locationSearchedDiv = document.querySelector(".locationSearched");
+		locationSearchedDiv.innerHTML = locationInput;
+
+		// Add the current location to the search history
+		const searchHistory = getSearchHistory();
+		searchHistory.push(locationInput);
+		localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+
+		// Event listener for the "Clear Search History" button
+		document
+			.getElementById("clearStorage")
+			.addEventListener("click", function () {
+				clearSearchHistory();
+			});
+
+		// Update the search history buttons
+		updateSearchHistoryButtons();
 	});
 });
 
