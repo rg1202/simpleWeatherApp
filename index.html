@@ -34,20 +34,25 @@
         
         <div id="weatherData" style="display: none;"></div>
         <!-- Button to trigger the modal -->
-        <a class="waves-effect waves-light btn modal-trigger" href="#myModal" style="display:none" id="forecastbtn">5-Day Weather</a>
+        <a class="waves-effect waves-light btn modal-trigger" href="#weatherModal" style="display:none" id="forecastbtn">5-Day Weather</a>
         <div id="weatherMap" style="display: none"></div>
+    </section>
+
+    <!--Search Results container-->
+    <section class="searchContainer" id="history"><h4>Search History</h4>
+        <div class="results-list"></div>
     </section>
 </div>
 
-<div id="myModal" class="modal">
+<div id="weatherModal" class="modal">
     <div class="modal-content">
         <h4>Forecast</h4>
         <p>5 Day Weather Forecast</p>
         <div class="locationSearched"></div>
         <div class= "wclass" id="weatherData"></div>
     </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+    
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" id="modalBtn">Close</a>
     </div>
 </div>
 
